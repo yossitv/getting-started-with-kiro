@@ -1,0 +1,18 @@
+{
+  "enabled": true,
+  "name": "after create specs file",
+  "description": "specs に基づいて自動的にGitブランチを作成します。specファイルが作成されたときにトリガーされ、spec名を使用してブランチを作成するコマンドを実行します。",
+  "version": "1",
+  "when": {
+    "type": "fileCreated",
+    "patterns": [
+      "**/*.spec.md",
+      "**/specs/**/*.md",
+      ".kiro/specs/**/*.md"
+    ]
+  },
+  "then": {
+    "type": "runCommand",
+    "command": "SPEC_FILE=\"$KIRO_FILE_PATH\"; SPEC_NAME=$(basename \"$SPEC_FILE\" .md | sed 's/\\.spec$//'); BRANCH_NAME=\"feature/$SPEC_NAME\"; git checkout -b \"$BRANCH_NAME\" 2>/dev/null || git checkout \"$BRANCH_NAME\""
+  }
+}
