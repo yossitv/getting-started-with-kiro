@@ -129,6 +129,8 @@ prompt: |
 
 #### 3. custom（カスタムイベント）
 
+カスタムイベントは、プロジェクト固有のワークフローや複雑な条件に基づいてHookを実行する仕組みです。
+
 ```yaml
 name: "Update Translations"
 trigger: "custom"
@@ -140,6 +142,125 @@ prompt: |
   
   対象言語: ja, zh, ko, fr, de
 ```
+
+**使用例：**
+- 特定のビジネスロジックに基づくトリガー
+- 複数の条件を組み合わせた実行
+- 外部システムとの連携
+- ワークフロー内の特定ステップ
+
+**カスタムイベントの実行方法：**
+
+カスタムイベントは以下の方法で発火させることができます：
+
+1. **コマンドパレットから実行**
+   ```
+   Cmd/Ctrl + Shift + P → "Kiro: Trigger Custom Hook Event"
+   → イベント名を選択または入力
+   ```
+
+2. **プログラムから実行（拡張機能API）**
+   ```typescript
+   // Kiro拡張機能内から
+   await vscode.commands.executeCommand(
+     'kiro.triggerCustomEvent',
+     'translationUpdate'
+   );
+   ```
+
+3. **他のHookから連鎖実行**
+   ```yaml
+   name: "Translation File Saved"
+   trigger: "onSave"
+   filePattern: "locales/en/**/*.json"
+   prompt: |
+     翻訳ファイルが保存されました。
+     カスタムイベント 'translationUpdate' をトリガーします。
+   actions:
+     - triggerEvent: "translationUpdate"
+   ```
+
+4. **外部スクリプトから実行**
+   ```bash
+   # Kiro CLIを使用（将来的な機能）
+   kiro hook trigger translationUpdate
+   ```
+
+**カスタムイベントの設定例：**
+
+```yaml
+# 例1: デプロイ準備チェック
+name: "Pre-deployment Check"
+trigger: "custom"
+event: "beforeDeploy"
+filePattern: "**/*"
+prompt: |
+  #Codebase
+  #Problems
+  
+  デプロイ前の最終チェックを実行します：
+  
+  1. 全テストが通過しているか
+  2. ビルドエラーがないか
+  3. 環境変数が設定されているか
+  4. セキュリティ脆弱性がないか
+  5. パフォーマンス基準を満たしているか
+enabled: true
+
+# 例2: データベースマイグレーション後
+name: "Post-migration Validation"
+trigger: "custom"
+event: "afterMigration"
+filePattern: "prisma/schema.prisma"
+prompt: |
+  #File prisma/schema.prisma
+  
+  マイグレーション後の検証を実行します：
+  
+  1. スキーマの整合性確認
+  2. シードデータの投入確認
+  3. 関連するTypeScript型定義の更新
+  4. APIエンドポイントの互換性確認
+enabled: true
+
+# 例3: 複数ファイル変更の統合処理
+name: "Batch File Processing"
+trigger: "custom"
+event: "batchUpdate"
+filePattern: "src/**/*.{ts,tsx}"
+prompt: |
+  複数ファイルの一括更新が完了しました。
+  
+  統合処理を実行します：
+  1. 依存関係の再解析
+  2. 型チェックの実行
+  3. インポート文の最適化
+  4. 未使用コードの検出
+enabled: true
+
+# 例4: 外部API連携
+name: "Sync with External System"
+trigger: "custom"
+event: "externalSync"
+filePattern: "**/*"
+prompt: |
+  外部システムとの同期イベントが発生しました。
+  
+  同期処理：
+  1. 変更内容の取得
+  2. ローカルファイルの更新
+  3. コンフリクトの検出と解決
+  4. 同期ログの記録
+enabled: true
+```
+
+### トリガー条件の詳細比較
+
+| トリガータイプ | 発火タイミング | 実行頻度 | 主な用途 | パフォーマンス影響 |
+|--------------|--------------|---------|---------|------------------|
+| **onSave** | ファイル保存時 | 保存毎 | リアルタイム検証 | 中〜高（throttle推奨） |
+| **manual** | ユーザー操作時 | 任意 | 重い処理・レビュー | 低（必要時のみ） |
+| **custom** | カスタムイベント | イベント発生時 | 複雑なワークフロー | 低〜中（設計次第） |
 
 ### ファイルパターン
 
@@ -159,6 +280,57 @@ excludePattern: "**/*.test.ts"
 
 # ルートディレクトリのファイル
 filePattern: "*.md"
+```
+
+### ファイルパターンの詳細解説
+
+#### Globパターンの基本構文
+
+```yaml
+# ワイルドカード
+*        # 任意の文字列（ディレクトリ区切りを除く）
+**       # 任意の階層のディレクトリ
+?        # 任意の1文字
+[abc]    # a, b, c のいずれか
+{a,b}    # a または b
+
+# 実例
+"*.ts"                    # ルートの全TSファイル
+"src/*.ts"                # srcディレクトリ直下の全TSファイル
+"src/**/*.ts"             # src以下の全TSファイル（再帰的）
+"src/**/test/*.ts"        # src以下のtestディレクトリ内の全TSファイル
+"**/*.{ts,tsx}"           # 全階層の.tsと.tsxファイル
+"src/[a-z]*.ts"           # srcディレクトリの小文字で始まるTSファイル
+```
+
+#### 実践的なパターン例
+
+```yaml
+# 1. コンポーネントファイルのみ（Storybookを除外）
+filePattern: "src/components/**/*.tsx"
+excludePattern: "**/*.stories.tsx"
+
+# 2. 設定ファイル群
+filePattern: "{package.json,tsconfig.json,*.config.{js,ts}}"
+
+# 3. テストファイル以外のTypeScript
+filePattern: "src/**/*.{ts,tsx}"
+excludePattern: "**/*.{test,spec}.{ts,tsx}"
+
+# 4. 特定の命名規則に従うファイル
+filePattern: "src/**/*Controller.ts"
+filePattern: "src/**/*Service.ts"
+filePattern: "src/**/*Repository.ts"
+
+# 5. 複数ディレクトリの同じ拡張子
+filePattern: "{src,lib,packages}/**/*.ts"
+
+# 6. ドキュメントファイル（複数形式）
+filePattern: "docs/**/*.{md,mdx,txt}"
+
+# 7. APIルートファイル
+filePattern: "src/api/**/route.ts"
+filePattern: "pages/api/**/*.{ts,tsx}"
 ```
 
 ## 実践的なHook例

@@ -1,5 +1,5 @@
 - [X] (0:00–0:30) 環境準備・流れ把握：`README.md`／`docs/chapter1/kiro-introduction.md`（インストール確認・依存解消・サンプル起動） 
-- [ ] (0:30–1:00) 基礎読む：`docs/chapter1/kiro-introduction.md`（スペック駆動の流れ・主要コマンドを把握、メモ枠作成）
+- [X] (0:30–1:00) 基礎読む：`docs/chapter1/kiro-introduction.md`（スペック駆動の流れ・主要コマンドを把握、メモ枠作成）
 - [ ] (1:00–1:30) テトリス実装1：`docs/chapter1/tetris-tutorial.md`（生成〜セットアップ）
 - [ ] (1:30–2:00) テトリス実装2：`docs/chapter1/tetris-tutorial.md`（ローカル起動・微修正・挙動確認）
 - [ ] (2:00–2:30) テスト基礎：`docs/chapter1/playwright-mcp-testing.md`（MCP設定→サンプルテスト実行）
