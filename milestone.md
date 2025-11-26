@@ -1,4 +1,4 @@
-- [ ] (0:00–0:30) 環境準備・流れ把握：`README.md`／`docs/chapter1/kiro-introduction.md`（インストール確認・依存解消・サンプル起動）
+- [X] (0:00–0:30) 環境準備・流れ把握：`README.md`／`docs/chapter1/kiro-introduction.md`（インストール確認・依存解消・サンプル起動） 
 - [ ] (0:30–1:00) 基礎読む：`docs/chapter1/kiro-introduction.md`（スペック駆動の流れ・主要コマンドを把握、メモ枠作成）
 - [ ] (1:00–1:30) テトリス実装1：`docs/chapter1/tetris-tutorial.md`（生成〜セットアップ）
 - [ ] (1:30–2:00) テトリス実装2：`docs/chapter1/tetris-tutorial.md`（ローカル起動・微修正・挙動確認）
@@ -18,18 +18,27 @@
 - [ ] (7:30 時点) 第3章「学習成果」チェック（3.1〜3.4の達成確認）
 - [ ] (7:30–8:00) 仕上げ・当日用チートシート：全章メモ整理、開始→実行→検証→ロールバック手順を1枚化
 
+
+- [ ] hookの使い方は別途時間が必要そう
+  - [ ] getting-started-with-kiro/docs/features/hooks-guide.md
 ---
 
 ## 第1章 学習進捗チェック
 
 **1.1 Kiroの基礎解説**
-- [ ] Kiroの基本概念と目的を説明できる
-- [ ] AutopilotとSupervisedモードの違いを理解し、使い分けられる
-- [ ] Chat Contextの6つの機能（#File、#Folder、#Problems、#Terminal、#Git Diff、#Codebase）を説明できる
-- [ ] スペック駆動開発の3段階（要件→設計→タスク）とレビュープロセスを理解している
-- [ ] Steering、Hooks、MCPの基本的な役割を説明できる
-- [ ] Kiroをインストールして基本操作ができる
-- [ ] 公式ドキュメント（https://kiro.dev/docs/）の場所を知っている
+- [x] Kiroの基本概念と目的を説明できる
+  spec が特徴の業界で実証されたAI活用手法を標準搭載されたIDE
+- [x] AutopilotとSupervisedモードの違いを理解し、使い分けられる
+- Autopilotは自動で差分が許可され、プロトタイプとかで使い、Supervisedは毎回人が許可する
+- [x] Chat Contextの6つの機能（#File、#Folder、#Problems、#Terminal、#Git Diff、#Codebase）を説明できる
+  codebaseはプロジェクトファイルを横断的に調べられて、Problemは問題をコンテキストに送れて、Terminalはターミナルが送れる
+- [x] スペック駆動開発の3段階（要件→設計→タスク）とレビュープロセスを理解している
+- [] Steering、Hooks、MCPの基本的な役割を説明できる
+ streeingはチームでの全体的な要件を束ねる部分で、より設計思想による
+ Hooksは特定のイベントが発生した際に自動的にエージェント実行を開始する機能
+ MCPはいつも通り
+- [x] Kiroをインストールして基本操作ができる
+- [x] 公式ドキュメント（https://kiro.dev/docs/）の場所を知っている
 
 **1.2 テトリスを作ってみよう**
 - [ ] Kiroでスペック駆動開発を実践できる
