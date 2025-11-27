@@ -1,0 +1,17 @@
+{
+  "enabled": true,
+  "name": "requirements.md or specs branch manager",
+  "description": "Automatically manages git branches for new spec folders. When requirements.md is created, creates a new branch. When tasks.md is created, commits and pushes the spec files to the branch.",
+  "version": "1",
+  "when": {
+    "type": "fileCreated",
+    "patterns": [
+      "./kiro/specs/*/requirements.md",
+      "./kiro/specs/*/tasks.md"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A file has been created in the specs directory. Analyze the file path to determine which spec folder it belongs to and what action to take:\n\n1. If requirements.md was created: Create a new git branch named after the spec folder (e.g., if the file is ./kiro/specs/feature-x/requirements.md, create branch \"feature-x\"). Switch to this branch.\n\n2. If tasks.md was created: Commit all files in that spec folder with a meaningful commit message (e.g., \"Add spec files for feature-x\") and push the branch to the remote repository.\n\nExecute the appropriate git commands based on which file was created."
+  }
+}

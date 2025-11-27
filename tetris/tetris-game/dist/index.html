@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tetris Game</title>
+  <script type="module" crossorigin src="/assets/index-zKGMvhhv.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-CWXSTXQj.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Tetris</h1>
+    <div class="game-area">
+      <canvas id="gameCanvas" width="300" height="600"></canvas>
+      <div class="side-panel">
+        <div class="score-display">
+          <h2>Score</h2>
+          <div id="score">0</div>
+        </div>
+        <div class="next-display">
+          <h2>Next</h2>
+          <canvas id="nextCanvas" width="120" height="120"></canvas>
+        </div>
+        <div class="controls">
+          <button id="startBtn">Start</button>
+          <button id="pauseBtn" disabled>Pause</button>
+          <button id="restartBtn" disabled>Restart</button>
+        </div>
+        <div class="instructions">
+          <h3>Controls</h3>
+          <p>← → : Move</p>
+          <p>↑ : Rotate</p>
+          <p>↓ : Drop</p>
+          <p>Space : Pause</p>
+        </div>
+      </div>
+    </div>
+    <div id="gameOver" class="game-over hidden">
+      <h2>Game Over</h2>
+      <p>Final Score: <span id="finalScore">0</span></p>
+    </div>
+  </div>
+</body>
+</html>
