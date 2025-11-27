@@ -6,6 +6,7 @@ import { normalize } from 'viem/ens';
 export interface ENSAgentData {
   domain: string;
   agentRecord: string | null;
+  avatar?: string | null;
   owner?: string;
 }
 
@@ -17,7 +18,7 @@ export interface UseENSAgentDataReturn {
 }
 
 const isValidENSDomain = (domain: string): boolean => {
-  return /^[a-z0-9-]+\.eth$/.test(domain.toLowerCase());
+  return /^[a-z0-9-]+(\.[a-z0-9-]+)*\.eth$/.test(domain.toLowerCase());
 };
 
 export const useENSAgentData = (): UseENSAgentDataReturn => {
@@ -42,20 +43,26 @@ export const useENSAgentData = (): UseENSAgentDataReturn => {
       });
 
       const normalizedDomain = normalize(domain);
-      const agentRecord = await client.getEnsText({
-        name: normalizedDomain,
-        key: 'agent',
+      
+      const [agentRecord, avatar] = await Promise.all([
+        client.getEnsText({
+          name: normalizedDomain,
+          key: 'agent',
+        }),
+        client.getEnsAvatar({
+          name: normalizedDomain,
+        }),
+      ]);
+
+      setData({
+        domain: normalizedDomain,
+        agentRecord: agentRecord || null,
+        avatar: avatar || null,
       });
 
       if (!agentRecord) {
         setError('No agent record found for this domain');
-        return;
       }
-
-      setData({
-        domain: normalizedDomain,
-        agentRecord,
-      });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch ENS data');
     } finally {
